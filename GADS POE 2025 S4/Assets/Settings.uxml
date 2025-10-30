@@ -1,0 +1,9 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement style="flex-grow: 1; background-color: rgb(51, 0, 0); -unity-background-image-tint-color: rgb(51, 0, 0);">
+        <engine:Slider label="Music Volume" value="42" high-value="100" name="MUSIC" style="color: rgb(255, 255, 255);" />
+        <engine:Slider label="Sound FX Volume" value="42" high-value="100" name="SOUNDFX" style="color: rgb(255, 255, 255);" />
+        <engine:Toggle label="Show Tutorials" name="TUTORIAL_TOGGLE" style="color: rgb(255, 255, 255);" />
+        <engine:Button text="Reset Game Progress" name="RESETGAME" parse-escape-sequences="false" />
+        <engine:Button text="Back to Main Menu" name="BACK2MENU" />
+    </engine:VisualElement>
+</engine:UXML>
