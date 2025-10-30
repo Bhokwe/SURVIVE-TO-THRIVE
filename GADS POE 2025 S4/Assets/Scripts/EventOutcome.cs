@@ -1,16 +1,21 @@
 using UnityEngine;
 
-public class EventOutcome : MonoBehaviour
+[System.Serializable]
+public class EventOutcome
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public StatToChange statToChange;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float amountToChange;
+
+    [Tooltip("The Status Effect to ADD (eg. sick).")]
+    public string statusEffectToAdd;
+
+    [Tooltip("The Status Effect to REMOVE (eg. hungry).")]
+    public string statusEffectToRemove;
+
+    [Tooltip("The item to ADD to skills.")]
+    public string skillToGain;
+
+    [Tooltip("The event to TRIGGER next.")]
+    public EventData nextEvent;
 }

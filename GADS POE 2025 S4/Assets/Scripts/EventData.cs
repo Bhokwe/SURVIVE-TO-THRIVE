@@ -1,16 +1,20 @@
+using System.Collections.Generic; 
 using UnityEngine;
 
-public class EventData : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[CreateAssetMenu(fileName = "New Event", menuName = "Game/New Event")]
+public class EventData : ScriptableObject
+{
+    // The title of the event (e.g., "A Tough Morning")
+    public string eventTitle;
+
+    // The main story text for the event, shown to the player.
+    [TextArea(3, 10)]
+    public string eventDescription;
+
+    // This uses our GamePhase enum 
+    public GamePhase eventPhase;
+
+    
+    public List<EventChoice> choices;
 }

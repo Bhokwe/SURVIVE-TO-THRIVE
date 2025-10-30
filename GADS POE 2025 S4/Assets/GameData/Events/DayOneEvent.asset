@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0fe47c70716cc0438e55cecdcb8994e, type: 3}
+  m_Name: DayOneEvent
+  m_EditorClassIdentifier: 
+  eventTitle: Wake up with a Toothache
+  eventDescription: You wake up and feel your jaw is closed shut
+  eventPhase: 0
+  choices:
+  - choiceDescription: Do you go to work and bear the pain?
+    educationalText: '" In the 2014 survey, 48% of workers said they could not afford
+      to take a day off due to financial pressures and mounting workloads."
+
+
+      "In
+      some cases, people go to work hoping their boss will send them home (12%)."'
+    outcomes:
+    - statToChange: 1
+      amountToChange: 250
+      statusEffectToAdd: Sick
+      statusEffectToRemove: Tired
+      skillToGain: 
+      nextEvent: {fileID: 0}
+    - statToChange: 2
+      amountToChange: -10
+      statusEffectToAdd: None
+      statusEffectToRemove: None
+      skillToGain: None
+      nextEvent: {fileID: 0}
+  - choiceDescription: 'Do you call in sick and go see a doctor? '
+    educationalText: "You get help from the doctor, you feel better but feel guilty
+      for not being able to go to work worried that you might lose your job. \n\n'11%
+      of those surveyed feared losing their jobs if they took time off to recover.'"
+    outcomes:
+    - statToChange: 1
+      amountToChange: -250
+      statusEffectToAdd: 
+      statusEffectToRemove: 
+      skillToGain: 
+      nextEvent: {fileID: 0}
+    - statToChange: 2
+      amountToChange: 100
+      statusEffectToAdd: Health Boost
+      statusEffectToRemove: 
+      skillToGain: 
+      nextEvent: {fileID: 0}
+    - statToChange: 3
+      amountToChange: -50
+      statusEffectToAdd: Mental Health
+      statusEffectToRemove: 
+      skillToGain: 
+      nextEvent: {fileID: 0}

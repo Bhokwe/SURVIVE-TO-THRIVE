@@ -1,16 +1,10 @@
 using UnityEngine;
 
-public class GamePhase : MonoBehaviour
+public enum GamePhase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    // Different phases of the game day
+    Morning,
+    Afternoon,
+    Evening 
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+} 
