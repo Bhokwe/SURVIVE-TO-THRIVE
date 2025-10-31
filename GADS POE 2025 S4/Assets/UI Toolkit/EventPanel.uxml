@@ -1,0 +1,13 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement style="flex-grow: 1;">
+        <engine:VisualElement name="DialogueBox" style="flex-grow: 1;">
+            <engine:Label text="Thrive to Survive" name="TitleLabel" style="-unity-font-definition: url(&quot;project://database/Assets/Death%20Bones.ttf?fileID=12800000&amp;guid=ca120732bbfcbca4fb6213a9cc206ae7&amp;type=3#Death Bones&quot;); color: rgb(134, 0, 0); -unity-text-align: upper-center; -unity-font-style: bold; font-size: 30px;" />
+            <engine:VisualElement name="ImageArea" style="flex-grow: 1; height: 128%; min-height: -22px; max-height: 154px;">
+                <engine:Label text="EventDescription:" name="DescriptionLabel" style="-unity-text-align: upper-left; background-color: rgba(255, 255, 255, 0); color: rgb(247, 247, 247); font-size: 30px; height: 135px; -unity-font-style: bold;" />
+            </engine:VisualElement>
+            <engine:Label text="Option 1:&#10;&#10;&#10;&#10;&#10;&#10;Option 2:&#10;" name="ChoiceContainer" style="color: rgb(255, 255, 255); font-size: 30px; height: 357px; -unity-font-style: bold; max-height: 331px; min-height: 43%;" />
+            <engine:Button text="Option 2" name="ChoiceButton1" style="background-color: rgb(255, 255, 255); align-self: center; width: 1271px; position: absolute; top: 990px; left: 326px; font-size: 30px;" />
+            <engine:Button text="Option 1" name="ChoiceButton2" style="background-color: rgb(255, 255, 255); width: 1276px; align-self: center; position: absolute; top: 870px; left: 326px; font-size: 30px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

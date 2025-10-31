@@ -94,12 +94,12 @@ public class UIManager : MonoBehaviour
     {
         if (playerStats == null) return; // Safety check
 
-        dayText.text = $"Day: {playerStats.currentDay}";
+        dayText.text = $"**Day:** {playerStats.currentDay}";
         // "F2" formats the float as currency (e.g., 20.50)
-        moneyText.text = $"R {playerStats.currentMoney:F2}";
+        moneyText.text = $"**Money:** R{playerStats.currentMoney:F2}";
         healthText.text = $"Health: {playerStats.currentHealth}/100";
-        hopeText.text = $"Hope: {playerStats.currentHope}/100";
-        communityTrustText.text = $"Trust: {playerStats.currentCommunityTrust}/100";
+        hopeText.text = $"**Hope:** {playerStats.currentHope}/100";
+        communityTrustText.text = $"**Trust:** {playerStats.currentCommunityTrust}/100";
     }
 
  
@@ -112,16 +112,20 @@ public class UIManager : MonoBehaviour
         }
 
         // Add new icons for each active effect
-       
-        foreach (string effect in playerStats.activeStatusEffects)
+
+        // New logic for a single primary status display (like "Hungry")
+        if (playerStats.activeStatusEffects.Count > 0)
         {
-            GameObject icon = Instantiate(statusEffectIconPrefab, statusEffectContainer);
-            // Assuming the prefab has a TextMeshPro component to set
-            TextMeshProUGUI iconText = icon.GetComponentInChildren<TextMeshProUGUI>();
-            if (iconText != null)
-            {
-                iconText.text = effect;
-            }
+            // For simplicity, we'll just display the first one as the primary status
+            string primaryStatus = playerStats.activeStatusEffects[0];
+            primaryStatusText.text = $"**Status:** <color=#FF0000>{primaryStatus}</color>"; // Red color for danger
+            primaryStatusText.gameObject.SetActive(true);
+        }
+        else
+        {
+            // No status effects, maybe show a positive message or hide it
+            primaryStatusText.text = $"**Status:** Good"; // Or just set it inactive
+            primaryStatusText.gameObject.SetActive(false); // Hide if no status
         }
     }
 
@@ -135,7 +139,7 @@ public class UIManager : MonoBehaviour
         currentEvent = eventData;
 
         //Set the text
-        eventTitleText.text = eventData.eventTitle;
+        eventTitleText.text = $"**{eventData.eventTitle}**";
         eventDescriptionText.text = eventData.eventDescription;
 
         //Clear any old choice buttons
@@ -185,12 +189,12 @@ public class UIManager : MonoBehaviour
         //Build the outcome description string
         StringBuilder sb = new StringBuilder();
         foreach (EventOutcome outcome in outcomes)
-        { 
+        {
             // Show stat changes
             if (outcome.amountToChange != 0)
             {
-            string sign = (outcome.amountToChange > 0) ? "+" : "";
-            sb.AppendLine($"{outcome.statToChange}: {sign}{outcome.amountToChange}");
+                string sign = (outcome.amountToChange > 0) ? "+" : "";
+                sb.AppendLine($"{outcome.statToChange}: {sign}{outcome.amountToChange}");
             }
 
 
@@ -208,9 +212,11 @@ public class UIManager : MonoBehaviour
             {
                 sb.AppendLine($"Skill Gained: {outcome.skillToGain}");
             }
+
+            consequenceModalPanel.SetActive(true);
         }
-            // If no outcomes, just say "You continue..."
-            if (sb.Length == 0)
+        // If no outcomes, just say "You continue..."
+        if (sb.Length == 0)
             {
                 sb.AppendLine("You reflect on your choice.");
             }
@@ -221,14 +227,16 @@ public class UIManager : MonoBehaviour
 
             //Hide educational text if it's empty
             educationalTextDisplay.gameObject.SetActive(!string.IsNullOrEmpty(educationalText));
-     }
+            consequenceModalPanel.SetActive(true);
+    }
 
     private void OnConsequenceContinueClicked()
     {
     //Hide this modal
     consequenceModalPanel.SetActive(false);
 
-    // 2. Tell the EventManager it's safe to proceed
-    //EventManager.ContinueAfterModal();
+        // 2. Tell the EventManager it's safe to proceed
+        //EventManager.ContinueAfterModal();
+        GameManager.Instance.EndDay();
     }
 }

@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/USS/Settings.uss?fileID=7433441132597879392&amp;guid=f392e88af461bf04682e3f47310bba32&amp;type=3#Settings" />
+    <engine:VisualElement style="flex-grow: 1; background-color: rgb(51, 0, 0); -unity-background-image-tint-color: rgb(51, 0, 0); justify-content: center;">
+        <engine:Slider label="Music Volume" value="42" high-value="100" name="MUSIC" style="color: rgb(255, 255, 255); position: absolute; top: 94px; left: 620px; height: 63px; width: 936px; font-size: 30px; -unity-font-style: bold;" />
+        <engine:Slider label="Sound FX Volume" value="42" high-value="100" name="SOUNDFX" style="color: rgb(255, 255, 255); position: absolute; top: 235px; left: 629px; width: 925px; font-size: 30px; -unity-font-style: bold;" />
+        <engine:Button text="Back to Main Menu" name="BACK2MENU" style="position: absolute; top: 832px; left: 790px; background-color: rgb(255, 255, 255); height: 83px; width: 591px; font-size: 30px; -unity-font-style: bold;" />
+        <engine:Button text="Reset Game Progress" name="RESETGAME" parse-escape-sequences="false" style="position: absolute; top: 673px; left: 785px; color: rgb(255, 255, 255); font-size: 30px; background-color: rgb(0, 0, 0); height: 101px; width: 597px; -unity-font-style: bold;" />
+        <engine:Toggle label="Show Tutorials" name="TUTORIAL_TOGGLE" style="color: rgb(255, 255, 255); align-self: center; height: 55px; width: 520px; font-size: 30px; position: absolute; top: 448px; left: 793px;" />
+    </engine:VisualElement>
+</engine:UXML>

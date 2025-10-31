@@ -27,3 +27,6 @@ VisualElement {
     transition-timing-function: ease-in-out-sine;
     transition-property: all;
 }
+
+.header {
+}
