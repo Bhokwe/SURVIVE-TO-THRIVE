@@ -89,8 +89,7 @@ public class GameManager : MonoBehaviour
     public void AdvanceToAfternoon()
     {
         currentPhase = GamePhase.Afternoon;
-        // FIX: Use a method or logic to get the afternoon event, e.g. from EventManager or random selection
-        // For now, set currentEvent to null or implement your own event selection logic
+        
         currentEvent = null; // Or: currentEvent = eventManager.GetAfternoonEvent();
         Debug.Log($"--- Day {playerStats.currentDay} - Afternoon ---");
         // Display the afternoon event/consequence
@@ -111,20 +110,19 @@ public class GameManager : MonoBehaviour
         Debug.Log($"--- Day {playerStats.currentDay} has ended. ---");
         StartNewDay();
     }
-    // --- CORE MECHANIC: PROCESS CHOICE ---
+    
     // This function is called by the UIManager when the player clicks an event button.
     public void MakeChoice(EventChoice choice)
     {
-        // 1. Apply all the outcomes (stat changes, status effects)
+        //Apply all the outcomes (stat changes, status effects)
         ProcessOutcomes(choice.outcomes);
 
-        // 2. Update the UI immediately to reflect the changes
+        //Update the UI immediately to reflect the changes
         uiManager.UpdateStatUI();
         uiManager.eventPanel.SetActive(false);
 
-        // 3. Determine the next step based on the choice and the current phase.
-        // FIX: Remove reference to choice.nextEvent (does not exist in EventChoice)
-        // Use currentEvent.eventPhase instead
+        // Determine the next step based on the choice and the current phase.
+
         if (currentEvent != null)
         {
             if (currentEvent.eventPhase == GamePhase.Morning)
@@ -225,7 +223,6 @@ public class GameManager : MonoBehaviour
     // Add this method to GameManager to fix the missing method error.
     private void ApplyStatusConsequences()
     {
-        // Implement status effect consequences here if needed.
-        // For now, this is a placeholder to resolve the CS0103 error.
+       
     }
 }

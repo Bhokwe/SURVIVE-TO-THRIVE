@@ -1,21 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Required for UI elements like Button, Slider, Image
-using TMPro; // Required for TextMeshPro text (Recommended)
-using System.Text; // Required for the StringBuilder
+using UnityEngine.UI; 
+using TMPro; 
+using System.Text;
 
-/// <summary>
-/// This is System 4: The UI Manager.
-/// It manages all UI elements, displaying stats, events, and consequences.
-/// It gets its information from other managers and sends player input
-/// (like button clicks) back to them.
-/// </summary>
 public class UIManager : MonoBehaviour
 {
     [Header("System References")]
-    // We can get these from the GameManager, or drag them in.
-    // Let's get them from the GameManager to keep it clean.
+
     private PlayerStats playerStats;
     private EventData currentEvent;
     private EventManager eventManager;
@@ -27,7 +20,7 @@ public class UIManager : MonoBehaviour
     [Tooltip("Text to display the current money")]
     public TextMeshProUGUI moneyText;
     [Tooltip("Slider or Text for Health")]
-    public TextMeshProUGUI healthText; // You can swap this for a Slider
+    public TextMeshProUGUI healthText;
     [Tooltip("Slider or Text for Hope")]
     public TextMeshProUGUI hopeText;
     [Tooltip("Slider or Text for Community Trust")]
@@ -61,6 +54,10 @@ public class UIManager : MonoBehaviour
     [Tooltip("The 'Continue' button on the modal")]
     public Button consequenceContinueButton;
 
+    [Header("Primary Status UI")]
+    [Tooltip("Text to display the primary status effect (e.g., 'Hungry')")]
+    public TextMeshProUGUI primaryStatusText;
+
 
     void Start()
     {
@@ -80,10 +77,7 @@ public class UIManager : MonoBehaviour
         UpdateAllUI();
     }
 
-    /// <summary>
-    /// A single function to refresh all UI elements.
-    /// The GameManager can call this at the start of a new day.
-    /// </summary>
+    
     public void UpdateAllUI()
     {
         UpdateStatUI();
@@ -235,7 +229,7 @@ public class UIManager : MonoBehaviour
     //Hide this modal
     consequenceModalPanel.SetActive(false);
 
-        // 2. Tell the EventManager it's safe to proceed
+        //Tell the EventManager it's safe to proceed
         //EventManager.ContinueAfterModal();
         GameManager.Instance.EndDay();
     }
