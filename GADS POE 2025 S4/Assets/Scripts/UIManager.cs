@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Required for UI elements like Button, Slider, Image
@@ -17,7 +16,7 @@ public class UIManager : MonoBehaviour
     // We can get these from the GameManager, or drag them in.
     // Let's get them from the GameManager to keep it clean.
     private PlayerStats playerStats;
-    private EventManager eventManager;
+    
 
     [Header("Stat Panel UI")]
     [Tooltip("Text to display the current day")]
@@ -64,7 +63,7 @@ public class UIManager : MonoBehaviour
     {
         // Get references from the Singleton
         playerStats = GameManager.Instance.playerStats;
-        eventManager = GameManager.Instance.eventManager;
+       
 
         // Make sure the UI starts in a clean state
         eventPanel.SetActive(false);
@@ -178,11 +177,11 @@ public class UIManager : MonoBehaviour
     private void OnChoiceButtonClicked(int index)
     {
         // 1. Hide the event panel
-        eventPanel.SetActive(false);
+        EventData currentEvent = GameManager.Instance.currentEvent;
+        EventChoice chosenChoice = currentEvent.choices[index];
 
-        // 2. Tell the EventManager which choice was made
-        // Pass 'null' for chainedEvent since it's not used here
-        eventManager.MakeChoice(index, null);
+        // --- FIX: CALL THE CORRECT MANAGER ---
+        GameManager.Instance.MakeChoice(chosenChoice);
     }
 
 

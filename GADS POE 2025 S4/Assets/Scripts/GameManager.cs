@@ -36,10 +36,17 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         playerStats.currentDay = 1;
-        StartNewDay();
+        eventManager initialEvent = Resources.Load<EventData>("PlaceholderEvent");
+
+        if (initialEvent == null)
+        {
+            Debug.LogError("ERROR: PlaceholderEvent not found. Game cannot start!");
+            return;
+        }
+        StartNewDay(initialEvent);
     }
 
-    public void StartNewDay()
+    public void StartNewDay(EventData morningEvent = null)
     {
         //check for the game over conditions from the previous night
         if (CheckForGameOver())
@@ -53,22 +60,42 @@ public class GameManager : MonoBehaviour
             playerStats.currentDay++;
         }
 
+        ApplyStatusConsequences();
+
+
         //set the phase to morning
         currentPhase = GamePhase.Morning;   
 
         Debug.Log($"--- Day {playerStats.currentDay} - Morning ---");
 
+        uiManager.UpdateDayUI();
+        currentEvent = morningEvent;
+        if (currentEvent != null)
+        {
+            uiManager.DisplayEvent(currentEvent);
+        }
+        else
+        {
+            Debug.LogWarning("No Morning Event available! Need random event logic.");
+            // **TODO: Implement random event selection logic here.**
+        }
+
     }
     public void AdvanceToAfternoon()
     {
         currentPhase = GamePhase.Afternoon;
+        currentEvent = afternoonEvent;
         Debug.Log($"--- Day {playerStats.currentDay} - Afternoon ---");
+        // Display the afternoon event/consequence
+        uiManager.UpdateStatUI();
+        uiManager.DisplayEvent(currentEvent);
     }
 
     public void AdvanceToEvening()
     {
         currentPhase = GamePhase.Evening;
         Debug.Log($"--- Day {playerStats.currentDay} - Evening ---");
+        EndDay(currentEvent.defaultNextEvent);
     }
 
 
@@ -77,7 +104,81 @@ public class GameManager : MonoBehaviour
         Debug.Log($"--- Day {playerStats.currentDay} has ended. ---");
         StartNewDay();
     }
+    // --- CORE MECHANIC: PROCESS CHOICE ---
+    // This function is called by the UIManager when the player clicks an event button.
+    public void MakeChoice(EventChoice choice)
+    {
+        // 1. Apply all the outcomes (stat changes, status effects)
+        ProcessOutcomes(choice.outcomes);
 
+        // 2. Update the UI immediately to reflect the changes
+        uiManager.UpdateStatUI();
+        uiManager.HideEventPanel();
+
+        // 3. Determine the next step based on the choice and the current phase.
+        if (choice.nextEvent != null)
+        {
+            AdvanceToAfternoon(choice.nextEvent);
+        }
+        else if (currentEvent.eventphase == GamePhase.Morning)
+        {
+            AdvanceToAfternoon(currentEvent.defaultNextEvent);
+        }
+        else if (currentEvent.eventphase == GamePhase.Afternoon)
+        {
+            AdvanceToEvening();
+        }
+        else if (currentEvent.eventphase == GamePhase.Evening)
+        {
+            // If no next event is specified, advance the game phase.
+            if (currentPhase == GamePhase.Morning)
+            {
+                AdvanceToAfternoon();
+            }
+            else if (currentPhase == GamePhase.Afternoon)
+            {
+                AdvanceToEvening();
+            }
+            else
+            {
+                EndDay();
+            }
+        }
+    }
+    private void  ProcessOutcomes(System.Collections.Generic.List<EventOutcome> outcomes) //SD
+    {
+        foreach (EventOutcome outcome in outcomes)
+        {
+            switch (outcome.statToChange)
+            {
+                case StatType.Hope:
+                    playerStats.currentHope = Mathf.Clamp(playerStats.currentHope + (int)outcome.amountToChange, 0, 100);
+                    break;
+                case StatType.Health:
+                    playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth + (int)outcome.amountToChange, 0, 100);
+                    break;
+                case StatType.Money:
+                    playerStats.currentMoney += outcome.moneyChange;
+                    break;
+                case StatType.CommunityTrust:
+                    playerStats.currentCommunityTrust = Mathf.Clamp(playerStats.currentCommunityTrust + (int)outcome.amountToChange, 0, 100);
+                    break;
+                default:
+                    Debug.LogWarning("Unknown stat type in outcome.");
+                    break;
+            }
+
+            // Status Effect Management
+            AddStatusEffect(outcome.statusEffectToAdd);
+            RemoveStatusEffect(outcome.statusEffectToRemove);
+            // Skill Gain Management
+            if (!string.IsNullOrEmpty(outcome.skillToGain) && !playerStats.acquiredSkills.Contains(outcome.skillToGain))
+            {
+                playerStats.acquiredSkills.Add(outcome.skillToGain);
+                Debug.Log($"Skill Gained: {outcome.skillToGain}");
+            }
+        }
+    }
     public bool CheckForGameOver()
     {
         // Lose if Hope or Health is 0, or Money is too low.

@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:Label text="Money : R0" name="Money" style="color: rgb(7, 201, 0); -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Death%20Bones.ttf?fileID=12800000&amp;guid=ca120732bbfcbca4fb6213a9cc206ae7&amp;type=3#Death Bones&quot;); font-size: 30px; width: 163px; justify-content: center; align-self: flex-start; align-items: flex-start;" />
+    <engine:VisualElement style="flex-grow: 1; height: 178px; flex-direction: column;">
+        <engine:VisualElement name="Stats" style="flex-grow: 1; height: 342px;">
+            <engine:Label text="Health : 100%" name="Health" style="-unity-font-style: bold; color: rgb(255, 255, 255); font-size: 30px; -unity-font-definition: url(&quot;project://database/Assets/Death%20Bones.ttf?fileID=12800000&amp;guid=ca120732bbfcbca4fb6213a9cc206ae7&amp;type=3#Death Bones&quot;);" />
+            <engine:Label text="Hope : 50/100" name="Hope" style="color: rgb(190, 0, 149); font-size: 30px; -unity-font-definition: url(&quot;project://database/Assets/Death%20Bones.ttf?fileID=12800000&amp;guid=ca120732bbfcbca4fb6213a9cc206ae7&amp;type=3#Death Bones&quot;); -unity-font-style: bold;" />
+            <engine:Label text="Trust : 50/100" name="Trust" style="-unity-font-style: bold; color: rgb(255, 103, 32); -unity-font-definition: url(&quot;project://database/Assets/Death%20Bones.ttf?fileID=12800000&amp;guid=ca120732bbfcbca4fb6213a9cc206ae7&amp;type=3#Death Bones&quot;); font-size: 30px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:Label text="Day: 1" name="Day" style="color: rgb(161, 161, 161); font-size: 30px;" />
+    <engine:Label text="Status: Hungry" name="Status" style="font-size: 30px; color: rgb(207, 0, 0);" />
+</engine:UXML>
