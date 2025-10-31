@@ -1,4 +1,5 @@
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Game State")]
     public GamePhase currentPhase;
+
+    // Add this field to store the current event
+    public EventData currentEvent;
 
     void Awake()
     {
@@ -36,7 +40,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         playerStats.currentDay = 1;
-        eventManager initialEvent = Resources.Load<EventData>("PlaceholderEvent");
+        StartNewDay();
+        EventData initialEvent = Resources.Load<EventData>("PlaceholderEvent");
 
         if (initialEvent == null)
         {
@@ -68,7 +73,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"--- Day {playerStats.currentDay} - Morning ---");
 
-        uiManager.UpdateDayUI();
+        uiManager.UpdateAllUI();
         currentEvent = morningEvent;
         if (currentEvent != null)
         {
@@ -84,7 +89,9 @@ public class GameManager : MonoBehaviour
     public void AdvanceToAfternoon()
     {
         currentPhase = GamePhase.Afternoon;
-        currentEvent = afternoonEvent;
+        // FIX: Use a method or logic to get the afternoon event, e.g. from EventManager or random selection
+        // For now, set currentEvent to null or implement your own event selection logic
+        currentEvent = null; // Or: currentEvent = eventManager.GetAfternoonEvent();
         Debug.Log($"--- Day {playerStats.currentDay} - Afternoon ---");
         // Display the afternoon event/consequence
         uiManager.UpdateStatUI();
@@ -95,7 +102,7 @@ public class GameManager : MonoBehaviour
     {
         currentPhase = GamePhase.Evening;
         Debug.Log($"--- Day {playerStats.currentDay} - Evening ---");
-        EndDay(currentEvent.defaultNextEvent);
+        EndDay();
     }
 
 
@@ -113,33 +120,22 @@ public class GameManager : MonoBehaviour
 
         // 2. Update the UI immediately to reflect the changes
         uiManager.UpdateStatUI();
-        uiManager.HideEventPanel();
+        uiManager.eventPanel.SetActive(false);
 
         // 3. Determine the next step based on the choice and the current phase.
-        if (choice.nextEvent != null)
+        // FIX: Remove reference to choice.nextEvent (does not exist in EventChoice)
+        // Use currentEvent.eventPhase instead
+        if (currentEvent != null)
         {
-            AdvanceToAfternoon(choice.nextEvent);
-        }
-        else if (currentEvent.eventphase == GamePhase.Morning)
-        {
-            AdvanceToAfternoon(currentEvent.defaultNextEvent);
-        }
-        else if (currentEvent.eventphase == GamePhase.Afternoon)
-        {
-            AdvanceToEvening();
-        }
-        else if (currentEvent.eventphase == GamePhase.Evening)
-        {
-            // If no next event is specified, advance the game phase.
-            if (currentPhase == GamePhase.Morning)
+            if (currentEvent.eventPhase == GamePhase.Morning)
             {
                 AdvanceToAfternoon();
             }
-            else if (currentPhase == GamePhase.Afternoon)
+            else if (currentEvent.eventPhase == GamePhase.Afternoon)
             {
                 AdvanceToEvening();
             }
-            else
+            else if (currentEvent.eventPhase == GamePhase.Evening)
             {
                 EndDay();
             }
@@ -151,16 +147,16 @@ public class GameManager : MonoBehaviour
         {
             switch (outcome.statToChange)
             {
-                case StatType.Hope:
+                case StatToChange.currentHope:
                     playerStats.currentHope = Mathf.Clamp(playerStats.currentHope + (int)outcome.amountToChange, 0, 100);
                     break;
-                case StatType.Health:
+                case StatToChange.currentHealth:
                     playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth + (int)outcome.amountToChange, 0, 100);
                     break;
-                case StatType.Money:
-                    playerStats.currentMoney += outcome.moneyChange;
+                case StatToChange.currentMoney:
+                    playerStats.currentMoney += (int)outcome.amountToChange;
                     break;
-                case StatType.CommunityTrust:
+                case StatToChange.currentCommunityTrust:
                     playerStats.currentCommunityTrust = Mathf.Clamp(playerStats.currentCommunityTrust + (int)outcome.amountToChange, 0, 100);
                     break;
                 default:
@@ -226,5 +222,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    // Add this method to GameManager to fix the missing method error.
+    private void ApplyStatusConsequences()
+    {
+        // Implement status effect consequences here if needed.
+        // For now, this is a placeholder to resolve the CS0103 error.
+    }
 }

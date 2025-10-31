@@ -18,17 +18,17 @@ public class EventManager : MonoBehaviour
     public List<EventData> allEvents; // Our "database" of all possible events
 
     // Internal tracker for the event currently being shown
-    private EventData currentEvent;
+    public EventData currentEvent;
 
- 
+
 
     void Start()
-    { 
+    {
         // Get our references from the GameManager Singleton
 
         gameManager = GameManager.Instance;
         playerStats = gameManager.playerStats;
-        uiManager = gameManager.uiManager; 
+        uiManager = gameManager.uiManager;
     }
 
     public void TriggerEvent(GamePhase phase)
@@ -60,7 +60,7 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    
+
     public void ShowEvent(EventData eventToShow)
     {
         if (eventToShow == null)
@@ -177,9 +177,9 @@ public class EventManager : MonoBehaviour
                 gameManager.AdvanceToEvening();
                 break;
             case GamePhase.Evening:
- 
+
                 Debug.Log("Evening event complete. Awaiting budgeting.");
                 break;
         }
+        }
     }
-}

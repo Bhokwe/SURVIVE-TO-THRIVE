@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // Required for UI elements like Button, Slider, Image
@@ -16,7 +17,9 @@ public class UIManager : MonoBehaviour
     // We can get these from the GameManager, or drag them in.
     // Let's get them from the GameManager to keep it clean.
     private PlayerStats playerStats;
-    
+    private EventData currentEvent;
+    private EventManager eventManager;
+
 
     [Header("Stat Panel UI")]
     [Tooltip("Text to display the current day")]
@@ -63,7 +66,7 @@ public class UIManager : MonoBehaviour
     {
         // Get references from the Singleton
         playerStats = GameManager.Instance.playerStats;
-       
+        eventManager = GameManager.Instance.eventManager;
 
         // Make sure the UI starts in a clean state
         eventPanel.SetActive(false);
@@ -87,9 +90,6 @@ public class UIManager : MonoBehaviour
         UpdateStatusEffectsUI();
     }
 
-    /// <summary>
-    /// GDD Function: Updates the text/sliders for all Core Stats.
-    /// </summary>
     public void UpdateStatUI()
     {
         if (playerStats == null) return; // Safety check
@@ -102,20 +102,17 @@ public class UIManager : MonoBehaviour
         communityTrustText.text = $"Trust: {playerStats.currentCommunityTrust}/100";
     }
 
-    /// <summary>
-    /// GDD Function: Shows icons for all activeStatusEffects.
-    /// </summary>
+ 
     public void UpdateStatusEffectsUI()
     {
-        // 1. Clear all old status icons
+        // Clear all old status icons
         foreach (Transform child in statusEffectContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // 2. Add new icons for each active effect
-        // This is simple, but not optimized (object pooling is better)
-        // For a beginner, Instantiate/Destroy is easiest to understand.
+        // Add new icons for each active effect
+       
         foreach (string effect in playerStats.activeStatusEffects)
         {
             GameObject icon = Instantiate(statusEffectIconPrefab, statusEffectContainer);
@@ -128,33 +125,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// GDD Function: Populates the UI with the event's data
-    /// and dynamically creates buttons for each choice.
-    /// </summary>
-    /// <param name="eventData">The event to display</param>
     public void DisplayEvent(EventData eventData)
     {
-        // 1. Turn on the panel
+        //Turn on the panel
         eventPanel.SetActive(true);
         consequenceModalPanel.SetActive(false); // Just in case
 
-        // 2. Set the text
+        // Store the current event for later use
+        currentEvent = eventData;
+
+        //Set the text
         eventTitleText.text = eventData.eventTitle;
         eventDescriptionText.text = eventData.eventDescription;
 
-        // 3. Clear any old choice buttons
+        //Clear any old choice buttons
         foreach (Transform child in choiceButtonContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // 4. Create new buttons for each choice
+        //Create new buttons for each choice
         for (int i = 0; i < eventData.choices.Count; i++)
         {
-            // This is a common "gotcha" in loops. We copy 'i' to a local
-            // variable 'choiceIndex' so the button's click listener
-            // captures the correct number.
+            
             int choiceIndex = i;
 
             // Create the button from our prefab
@@ -170,31 +163,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// A helper function called by the dynamic choice buttons.
-    /// </summary>
-    /// <param name="index">The index of the choice that was clicked.</param>
     private void OnChoiceButtonClicked(int index)
     {
-        // 1. Hide the event panel
-        EventData currentEvent = GameManager.Instance.currentEvent;
+        //Hide the event panel
+        eventPanel.SetActive(false);
         EventChoice chosenChoice = currentEvent.choices[index];
 
-        // --- FIX: CALL THE CORRECT MANAGER ---
+        eventManager.MakeChoice(index, null);
+
+        //FIX: CALL THE CORRECT MANAGER
         GameManager.Instance.MakeChoice(chosenChoice);
     }
 
 
-    /// <summary>
-    /// GDD Function: Shows the modal with outcomes and educational text.
-    /// </summary>
+
     public void ShowConsequenceModal(List<EventOutcome> outcomes, string educationalText)
     {
-        // 1. Show the modal
+        //Show the modal
         consequenceModalPanel.SetActive(true);
 
-        // 2. Build the outcome description string
-        // Using a StringBuilder is much more efficient than (string + string)
+        //Build the outcome description string
         StringBuilder sb = new StringBuilder();
         foreach (EventOutcome outcome in outcomes)
         { 
@@ -228,22 +216,19 @@ public class UIManager : MonoBehaviour
             }
             consequenceDetailsText.text = sb.ToString();
 
-            // 3. Set the educational text
+            //Set the educational text
             educationalTextDisplay.text = educationalText;
 
-            // 4. (Optional) Hide educational text if it's empty
+            //Hide educational text if it's empty
             educationalTextDisplay.gameObject.SetActive(!string.IsNullOrEmpty(educationalText));
      }
 
-    /// <summary>
-    /// This is called by the 'consequenceContinueButton'
-    /// </summary>
     private void OnConsequenceContinueClicked()
     {
-    // 1. Hide this modal
+    //Hide this modal
     consequenceModalPanel.SetActive(false);
 
     // 2. Tell the EventManager it's safe to proceed
-    eventManager.ContinueAfterModal();
+    //EventManager.ContinueAfterModal();
     }
 }
